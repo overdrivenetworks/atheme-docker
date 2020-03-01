@@ -36,6 +36,11 @@ ARG BUILD_CONTRIB_MODULES
 RUN apk add --no-cache openssl && (test -z "$BUILD_CONTRIB_MODULES" || apk add --no-cache libexecinfo)
 
 COPY --from=builder /atheme/ /atheme
+
+# Add custom entrypoint to check that data dir is writable - Atheme does not check this by itself
+RUN echo "$ATHEME_UID" > /.atheme_uid
+COPY entrypoint.sh /
+
 RUN adduser -D -h /atheme -u $ATHEME_UID atheme
 RUN chown -R atheme /atheme
 USER atheme
@@ -43,4 +48,4 @@ USER atheme
 # Services config & DB
 VOLUME /atheme/etc
 
-ENTRYPOINT ["/atheme/bin/atheme-services", "-n"]
+ENTRYPOINT ["/entrypoint.sh"]
