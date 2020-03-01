@@ -9,7 +9,7 @@ steps:
     VERSION: "7.2.10-r2"
   commands:
     - "./write-tags.sh $VERSION > .tags"
-    - "echo Will build the following tags:"
+    - "# Will build the following tags:"
     - "cat .tags"
 
 - name: "build docker image"
@@ -21,7 +21,7 @@ steps:
     password:
       from_secret: docker_password
     build_args:
-      - VERSION=7.2.10-r2
+      - ATHEME_VERSION=7.2.10-r2
   trigger:
     branch:
     - master
@@ -32,7 +32,7 @@ steps:
     VERSION: "7.2.10-r2"
   commands:
     - "./write-tags.sh $VERSION contrib > .tags"
-    - "echo Will build the following tags:"
+    - "# Will build the following tags:"
     - "cat .tags"
 
 - name: "build docker image (contrib)"
@@ -44,7 +44,7 @@ steps:
     password:
       from_secret: docker_password
     build_args:
-      - VERSION=7.2.10-r2
+      - ATHEME_VERSION=7.2.10-r2
       - BUILD_CONTRIB_MODULES=true
   trigger:
     branch:
