@@ -33,7 +33,9 @@ FROM alpine:latest
 ARG ATHEME_UID
 ARG BUILD_CONTRIB_MODULES
 
-RUN apk add --no-cache openssl && (test -z "$BUILD_CONTRIB_MODULES" || apk add --no-cache libexecinfo)
+# openssl: used by some hashing and SASL algorithms
+# msmtp: used to route mail to an external mail server
+RUN apk add --no-cache openssl msmtp ca-certificates && (test -z "$BUILD_CONTRIB_MODULES" || apk add --no-cache libexecinfo)
 
 COPY --from=builder /atheme/ /atheme
 
