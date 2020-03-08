@@ -1,9 +1,9 @@
 ---
 kind: pipeline
-name: default
+name: build
 
 steps:
-- name: "set image tags (normal build)"
+- name: "set image tags"
   image: alpine
   environment:
     VERSION: "7.2.10-r2"
@@ -26,7 +26,12 @@ steps:
     branch:
     - master
 
-- name: "set image tags (build with contrib)"
+---
+kind: pipeline
+name: build-contrib
+
+steps:
+- name: "set image tags"
   image: alpine
   environment:
     VERSION: "7.2.10-r2"
@@ -35,7 +40,7 @@ steps:
     - "# Will build the following tags:"
     - "cat .tags"
 
-- name: "build docker image (contrib)"
+- name: "build docker image"
   image: plugins/docker
   settings:
     repo: ovdnet/atheme
