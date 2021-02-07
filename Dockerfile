@@ -5,6 +5,7 @@ ARG BUILD_CONTRIB_MODULES=
 FROM alpine:latest AS builder
 ARG ATHEME_VERSION
 ARG BUILD_CONTRIB_MODULES
+ARG MAKE_NUM_JOBS
 RUN mkdir /atheme-src
 
 # Install build-deps and runtime deps
@@ -26,7 +27,7 @@ RUN cd /atheme-src/libmowgli-2 && \
 # Configure and build
 RUN cd /atheme-src && \
     ./configure --prefix=/atheme $(test -z "$BUILD_CONTRIB_MODULES" || echo --enable-contrib) && \
-    make -j$(nproc) && make install
+    make -j${MAKE_NUM_JOBS:-$(nproc)} && make install
 
 
 FROM alpine:latest

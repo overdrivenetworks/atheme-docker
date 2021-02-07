@@ -30,3 +30,4 @@ For those who want to create customized builds, here are options exposed by the 
 - `ATHEME_UID`: sets the UID for the Atheme user to run as. Defaults to 10000.
 - `ATHEME_VERSION`: Atheme version to pull from Git
 - `BUILD_CONTRIB_MODULES`: if set to a non-empty value, enables building contrib modules.
+- `MAKE_NUM_JOBS`: sets the `-j` flag for make. Defaults to `$(nproc)` if left empty.
