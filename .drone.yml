@@ -2,31 +2,30 @@
 kind: pipeline
 name: build
 
-steps:
-- name: "set image tags"
-  image: alpine
-  environment:
-    VERSION: "7.2.10-r2"
-  commands:
-    - "./write-tags.sh $VERSION > .tags"
-    - "# Will build the following tags:"
-    - "cat .tags"
+platform:
+  os: linux
+  arch: amd64
 
-- name: "build docker image"
-  # Basically plugins/docker but bumped to Docker v20.10.7 for Alpine 3.14 support
-  # See https://github.com/drone-plugins/drone-docker/issues/326
+steps:
+- name: set image tags
+  image: alpine
+  commands:
+  - ./write-tags.sh $VERSION contrib > .tags
+  - "# Will build the following tags:"
+  - cat .tags
+  environment:
+    VERSION: 7.2.10-r2
+
+- name: build docker image
   image: ovdnet/drone-docker
   settings:
+    build_args:
+    - ATHEME_VERSION=7.2.10-r2
+    password:
+      from_secret: docker_password
     repo: ovdnet/atheme
     username:
       from_secret: docker_user
-    password:
-      from_secret: docker_password
-    build_args:
-      - ATHEME_VERSION=7.2.10-r2
-  trigger:
-    branch:
-    - master
   volumes:
   - name: docker-socket
     path: /var/run/docker.sock
@@ -40,30 +39,31 @@ volumes:
 kind: pipeline
 name: build-contrib
 
-steps:
-- name: "set image tags"
-  image: alpine
-  environment:
-    VERSION: "7.2.10-r2"
-  commands:
-    - "./write-tags.sh $VERSION contrib > .tags"
-    - "# Will build the following tags:"
-    - "cat .tags"
+platform:
+  os: linux
+  arch: amd64
 
-- name: "build docker image"
+steps:
+- name: set image tags
+  image: alpine
+  commands:
+  - ./write-tags.sh $VERSION contrib > .tags
+  - "# Will build the following tags:"
+  - cat .tags
+  environment:
+    VERSION: 7.2.10-r2
+
+- name: build docker image
   image: ovdnet/drone-docker
   settings:
+    build_args:
+    - ATHEME_VERSION=7.2.10-r2
+    - BUILD_CONTRIB_MODULES=true
+    password:
+      from_secret: docker_password
     repo: ovdnet/atheme
     username:
       from_secret: docker_user
-    password:
-      from_secret: docker_password
-    build_args:
-      - ATHEME_VERSION=7.2.10-r2
-      - BUILD_CONTRIB_MODULES=true
-  trigger:
-    branch:
-    - master
   volumes:
   - name: docker-socket
     path: /var/run/docker.sock
@@ -72,3 +72,5 @@ volumes:
 - name: docker-socket
   host:
     path: /var/run/docker.sock
+
+...
