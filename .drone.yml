@@ -13,7 +13,9 @@ steps:
     - "cat .tags"
 
 - name: "build docker image"
-  image: plugins/docker
+  # Basically plugins/docker but bumped to Docker v20.10.7 for Alpine 3.14 support
+  # See https://github.com/drone-plugins/drone-docker/issues/326
+  image: ovdnet/drone-docker
   settings:
     repo: ovdnet/atheme
     username:
@@ -25,6 +27,14 @@ steps:
   trigger:
     branch:
     - master
+  volumes:
+  - name: docker-socket
+    path: /var/run/docker.sock
+
+volumes:
+- name: docker-socket
+  host:
+    path: /var/run/docker.sock
 
 ---
 kind: pipeline
@@ -41,7 +51,7 @@ steps:
     - "cat .tags"
 
 - name: "build docker image"
-  image: plugins/docker
+  image: ovdnet/drone-docker
   settings:
     repo: ovdnet/atheme
     username:
@@ -54,3 +64,11 @@ steps:
   trigger:
     branch:
     - master
+  volumes:
+  - name: docker-socket
+    path: /var/run/docker.sock
+
+volumes:
+- name: docker-socket
+  host:
+    path: /var/run/docker.sock
