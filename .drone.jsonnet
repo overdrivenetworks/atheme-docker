@@ -50,7 +50,8 @@ local build(contrib=false) = {
         "path": "/var/run/docker.sock"
       }
     }
-  ]
+  ],
+  "depends_on": std.prune([if contrib then "build"]),
 };
 
 [
