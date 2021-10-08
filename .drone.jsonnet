@@ -9,7 +9,7 @@ local build(contrib=false) = {
         "VERSION": "7.2.10-r2"
       },
       "commands": [
-        "./write-tags.sh $VERSION contrib > .tags",
+        "./write-tags.sh $VERSION" + (if contrib then " contrib" else " ") + "> .tags",
         "# Will build the following tags:",
         "cat .tags"
       ]
