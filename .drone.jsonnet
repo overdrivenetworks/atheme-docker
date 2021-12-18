@@ -1,3 +1,5 @@
+local VERSION = "7.2.11";
+
 local build(contrib=false) = {
   "kind": "pipeline",
   "name": "build" + (if contrib then "-contrib" else ""),
@@ -6,7 +8,7 @@ local build(contrib=false) = {
       "name": "set image tags",
       "image": "alpine",
       "environment": {
-        "VERSION": "7.2.10-r2"
+        "VERSION": VERSION
       },
       "commands": [
         "./write-tags.sh $VERSION" + (if contrib then " contrib" else " ") + "> .tags",
@@ -26,7 +28,7 @@ local build(contrib=false) = {
           "from_secret": "docker_password"
         },
         "build_args": std.prune([
-          "ATHEME_VERSION=7.2.10-r2",
+          "ATHEME_VERSION=" + VERSION,
           (if contrib then "BUILD_CONTRIB_MODULES=true")
         ])
       },
