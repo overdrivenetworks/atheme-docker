@@ -1,4 +1,4 @@
-local VERSION = "7.2.11";
+local VERSION = "7.2.12";
 
 local build(contrib=false) = {
   "kind": "pipeline",
