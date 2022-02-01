@@ -1,11 +1,13 @@
 ARG ATHEME_UID=10000
-ARG ATHEME_VERSION=7.2.10-r2
+ARG ATHEME_VERSION
 ARG BUILD_CONTRIB_MODULES=
 
 FROM alpine:latest AS builder
 ARG ATHEME_VERSION
 ARG BUILD_CONTRIB_MODULES
 ARG MAKE_NUM_JOBS
+RUN test -n "$ATHEME_VERSION" || (echo "Please set a version to build in build arg ATHEME_VERSION" && false)
+
 RUN mkdir /atheme-src
 
 # Install build-deps and runtime deps
