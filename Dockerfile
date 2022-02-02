@@ -26,6 +26,9 @@ RUN git clone https://github.com/atheme/atheme -b v${ATHEME_VERSION} --depth=1 a
 RUN cd /atheme-src/libmowgli-2 && \
     git pull origin master
 
+# 2022-02-01: build fix for alpine
+RUN test -z "$BUILD_CONTRIB_MODULES" || sed -i "s/@MKDIR_P@/mkdir -p/g" /atheme-src/modules/contrib/buildsys.mk.in
+
 # Configure and build
 RUN cd /atheme-src && \
     ./configure --prefix=/atheme $(test -z "$BUILD_CONTRIB_MODULES" || echo --enable-contrib) && \
