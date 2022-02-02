@@ -18,7 +18,7 @@ local build(contrib=false) = {
     },
     {
       "name": "build docker image",
-      "image": "ovdnet/drone-docker",
+      "image": "plugins/docker",
       "settings": {
         "repo": "ovdnet/atheme",
         "username": {
